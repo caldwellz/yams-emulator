@@ -1,0 +1,16 @@
+/***************************************************
+* version.c: Project version / revision            *
+* Copyright (C) 2020 Zach Caldwell                 *
+****************************************************
+* This Source Code Form is subject to the terms of *
+* the Mozilla Public License, v. 2.0. If a copy of *
+* the MPL was not distributed with this file, You  *
+* can obtain one at http://mozilla.org/MPL/2.0/.   *
+***************************************************/
+
+#include "version.h"
+
+const char* YAMS_VERSION = "@version@";
+const char* YAMS_REVISION = "@vcs_tag_placeholder@";
+const char* YAMS_COMPILER = "@compiler@";
+const char* YAMS_COMPILER_VERSION = "@compiler_version@";
