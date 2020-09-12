@@ -32,7 +32,8 @@ endif
 
 # List dependencies and sources
 emu_deps = [dep_sdl, dep_sdlmain]
-emu_srcs = files(['main.c'])
+emu_srcs = files(['main.c', 'cpu_bus.c', 'cpu_special.c'])
+subdir('musashi')
 
 
 # Create the executable target
