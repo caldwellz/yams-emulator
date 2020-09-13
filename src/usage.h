@@ -1,5 +1,5 @@
 /***************************************************
-* YAMS-Emu Main Entry Point                        *
+* Argument parsing and usage/header printing       *
 * Copyright (C) 2020 Zach Caldwell                 *
 ****************************************************
 * This Source Code Form is subject to the terms of *
@@ -8,22 +8,22 @@
 * can obtain one at http://mozilla.org/MPL/2.0/.   *
 ***************************************************/
 
-#include "musashi/m68k.h"
-#include "usage.h"
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef _YAMS_USAGE_H_
+#define _YAMS_USAGE_H_
 
-int main(int argc, char* argv[])
-{
-    YAMS_PrintHeader();
-    YAMS_params* params = YAMS_ParseArgs(argc, argv);
+#ifdef __cplusplus
+extern "C" {
+#endif //__cplusplus
 
-    m68k_init();
-    m68k_set_cpu_type(M68K_CPU_TYPE_68010);
-    m68k_pulse_reset();
-    m68k_execute(50);
-    free(params);
+typedef struct {
+    char* ROMfn;
+} YAMS_params;
 
-    printf("End of simulation");
-    return 0;
+void YAMS_PrintHeader();
+void YAMS_PrintUsage();
+YAMS_params* YAMS_ParseArgs(int argc, char* argv[]);
+
+#ifdef __cplusplus
 }
+#endif //__cplusplus
+#endif //_YAMS_USAGE_H_
