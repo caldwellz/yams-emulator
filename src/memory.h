@@ -22,6 +22,9 @@ extern "C" {
  */
 int YAMS_InitMemoryMap(unsigned int addrBits);
 
+/** Destroy and free the memory map. */
+void YAMS_FreeMemoryMap();
+
 /**
  * Load a ROM image from a file and mark its space read-only internally.
  * Can load multiple images, but all their spaces will be treated as contiguous for the read-only marking.

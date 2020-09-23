@@ -31,12 +31,16 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
+	// Run the simulation
     m68k_init();
     m68k_set_cpu_type(M68K_CPU_TYPE_68010);
     m68k_pulse_reset();
-    m68k_execute(50);
-    free(params);
+    m68k_execute(10000);
 
+	// Clean up
+	YAMS_FreeMemoryMap();
+    free(params);
     printf("End of simulation");
+
     return 0;
 }

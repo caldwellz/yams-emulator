@@ -76,7 +76,7 @@ unsigned int m68k_read_memory_32(unsigned int address)
 		return YAMS_ReadMemory32(address);
 	else {
 		// TODO: read from peripheral space
-		printf("Read long-word outside memory at $%06X\n", address);
+		printf("Read long outside memory at $%06X\n", address);
 	}
 
     return 0;
