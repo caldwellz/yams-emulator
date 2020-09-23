@@ -8,15 +8,28 @@
 * can obtain one at http://mozilla.org/MPL/2.0/.   *
 ***************************************************/
 
-#include "musashi/m68k.h"
+#include "memory.h"
 #include "usage.h"
+#include "musashi/m68k.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+const unsigned int memoryBits = 21; //2MB
 
 int main(int argc, char* argv[])
 {
     YAMS_PrintHeader();
+
+    // Set up memory map and ROM image
     YAMS_params* params = YAMS_ParseArgs(argc, argv);
+	if (!YAMS_InitMemoryMap(memoryBits)) {
+		printf("Failed to allocate memory map\n");
+		return -1;
+	}
+    if (!YAMS_LoadROMImage(params->ROMfn, 0)) {
+		printf("Failed to load ROM image\n");
+		return -1;
+	}
 
     m68k_init();
     m68k_set_cpu_type(M68K_CPU_TYPE_68010);

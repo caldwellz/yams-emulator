@@ -8,6 +8,7 @@
 * can obtain one at http://mozilla.org/MPL/2.0/.   *
 ***************************************************/
 
+#include "memory.h"
 #include "musashi/m68k.h"
 #include <stdio.h>
 
@@ -40,48 +41,79 @@ void m68k_set_fc(unsigned int new_fc)
 }
 
 
-/** Dummy function that just returns 0 */
+/** Dispatches reads to either memory (ROM/RAM) or peripheral space. */
 unsigned int m68k_read_memory_8(unsigned int address)
 {
-    printf("Reading byte from $%06X\n", address);
-    return 0x00;
+	if (address <= YAMS_GetMaxMemAddress())
+		return YAMS_ReadMemory8(address);
+	else {
+		// TODO: read from peripheral space
+		printf("Read byte outside memory at $%06X\n", address);
+	}
+
+	return 0;
 }
 
 
-/** Dummy function that just returns NOP */
+/** Dispatches reads to either memory (ROM/RAM) or peripheral space. */
 unsigned int m68k_read_memory_16(unsigned int address)
 {
-    printf("Reading word from $%06X\n", address);
+	if (address <= YAMS_GetMaxMemAddress())
+		return YAMS_ReadMemory16(address);
+	else {
+		// TODO: read from peripheral space
+		printf("Read word outside memory at $%06X\n", address);
+	}
 
-    // No-op instruction
-    return 0x4E71;
+    return 0;
 }
 
 
-/** Dummy function that just returns a main init address */
+/** Dispatches reads to either memory (ROM/RAM) or peripheral space. */
 unsigned int m68k_read_memory_32(unsigned int address)
 {
-    printf("Reading long from $%06X\n", address);
-    return 0x000000C0;
+	if (address <= YAMS_GetMaxMemAddress())
+		return YAMS_ReadMemory32(address);
+	else {
+		// TODO: read from peripheral space
+		printf("Read long-word outside memory at $%06X\n", address);
+	}
+
+    return 0;
 }
 
 
-/** Dummy function that just prints to the console */
+/** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_8(unsigned int address, unsigned int value)
 {
-    printf("Writing 0x%02X to $%06X\n", value, address);
+	if (address <= YAMS_GetMaxMemAddress())
+		YAMS_WriteMemory8(address, value);
+	else {
+		// TODO: write to peripheral space
+		printf("Ignored write of 0x%02X outside memory at $%06X\n", value, address);
+	}
 }
 
 
-/** Dummy function that just prints to the console */
+/** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_16(unsigned int address, unsigned int value)
 {
-    printf("Writing 0x%04X to $%06X\n", value, address);
+	if (address <= YAMS_GetMaxMemAddress())
+		YAMS_WriteMemory16(address, value);
+	else {
+		// TODO: write to peripheral space
+		printf("Ignored write of 0x%04X outside memory at $%06X\n", value, address);
+	}
 }
 
 
-/** Dummy function that just prints to the console */
+/** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_32(unsigned int address, unsigned int value)
 {
-    printf("Writing 0x%08X to $%06X\n", value, address);
+	if (address <= YAMS_GetMaxMemAddress())
+		YAMS_WriteMemory32(address, value);
+	else {
+		// TODO: write to peripheral space
+		printf("Ignored write of 0x%08X outside memory at $%06X\n", value, address);
+	}
 }
