@@ -11,7 +11,7 @@
 #include "config.h"
 #include "memory.h"
 #include "musashi/m68k.h"
-#include <stdio.h>
+#include <SDL2/SDL_log.h>
 
 // CPU function codes (address spaces) table
 const char* functionCodes[8] = {
@@ -32,7 +32,7 @@ void m68k_set_fc(unsigned int new_fc)
     static unsigned int fc_count = 0;
 
     if (new_fc != fc) {
-        printf("Changed function code to 0x%01X (%s); previously kept for %i accesses\n", new_fc, functionCodes[new_fc], fc_count);
+        SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Changed function code to 0x%01X (%s); previously kept for %i accesses\n", new_fc, functionCodes[new_fc], fc_count);
         fc = new_fc;
         fc_count = 0;
     }
@@ -48,7 +48,7 @@ unsigned int m68k_read_memory_8(unsigned int address)
         return YAMS_ReadMemory8(address);
     else {
         // TODO: read from peripheral space
-        printf("Read byte outside memory at $%06X\n", address);
+        SDL_Log("Read byte outside memory at $%06X\n", address);
     }
 
     return 0;
@@ -62,7 +62,7 @@ unsigned int m68k_read_memory_16(unsigned int address)
         return YAMS_ReadMemory16(address);
     else {
         // TODO: read from peripheral space
-        printf("Read word outside memory at $%06X\n", address);
+        SDL_Log("Read word outside memory at $%06X\n", address);
     }
 
     return 0;
@@ -76,7 +76,7 @@ unsigned int m68k_read_memory_32(unsigned int address)
         return YAMS_ReadMemory32(address);
     else {
         // TODO: read from peripheral space
-        printf("Read long outside memory at $%06X\n", address);
+        SDL_Log("Read long outside memory at $%06X\n", address);
     }
 
     return 0;
@@ -87,13 +87,13 @@ unsigned int m68k_read_memory_32(unsigned int address)
 void m68k_write_memory_8(unsigned int address, unsigned int value)
 {
     if (address == DBG_ADDRESS)
-        printf("Wrote       0x%02X to debug address\n", value);
+        SDL_Log("Wrote       0x%02X to debug address\n", value);
     else {
         if (address <= YAMS_GetMaxMemAddress())
             YAMS_WriteMemory8(address, value);
         else {
             // TODO: write to peripheral space
-            printf("Ignored write of 0x%02X outside memory at $%06X\n", value, address);
+            SDL_Log("Ignored write of       0x%02X outside memory at $%06X\n", value, address);
         }
     }
 }
@@ -103,13 +103,13 @@ void m68k_write_memory_8(unsigned int address, unsigned int value)
 void m68k_write_memory_16(unsigned int address, unsigned int value)
 {
     if (address == DBG_ADDRESS)
-        printf("Wrote     0x%04X to debug address\n", value);
+        SDL_Log("Wrote     0x%04X to debug address\n", value);
     else {
         if (address <= YAMS_GetMaxMemAddress())
             YAMS_WriteMemory16(address, value);
         else {
             // TODO: write to peripheral space
-            printf("Ignored write of 0x%04X outside memory at $%06X\n", value, address);
+            SDL_Log("Ignored write of     0x%04X outside memory at $%06X\n", value, address);
         }
     }
 }
@@ -119,13 +119,13 @@ void m68k_write_memory_16(unsigned int address, unsigned int value)
 void m68k_write_memory_32(unsigned int address, unsigned int value)
 {
     if (address == DBG_ADDRESS)
-        printf("Wrote 0x%08X to debug address\n", value);
+        SDL_Log("Wrote 0x%08X to debug address\n", value);
     else {
         if (address <= YAMS_GetMaxMemAddress())
             YAMS_WriteMemory32(address, value);
         else {
             // TODO: write to peripheral space
-            printf("Ignored write of 0x%08X outside memory at $%06X\n", value, address);
+            SDL_Log("Ignored write of 0x%08X outside memory at $%06X\n", value, address);
         }
     }
 }

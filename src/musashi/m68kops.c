@@ -28228,7 +28228,7 @@ static void m68k_op_pflush_32(void)
 {
 	if ((CPU_TYPE_IS_EC020_PLUS(CPU_TYPE)) && (HAS_PMMU))
 	{
-		fprintf(stderr,"68040: unhandled PFLUSH\n");
+		M68K_DO_LOG("68040: unhandled PFLUSH\n");
 		return;
 	}
 	m68ki_exception_1111();

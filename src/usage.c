@@ -10,12 +10,15 @@
 
 #include "usage.h"
 #include "version.h"
+#include <SDL2/SDL_log.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 void YAMS_PrintHeader()
 {
+    // SDL logs print an annoying priority string before the log message, so
+    // the header and usage are the two things we still print directly to stdout.
     const char* header = "YAMS (Yet Another M68k System) Emulator (%s-%s [%s-%s])\nCopyright (C) 2020 Zach Caldwell\n\n";
     printf(header, YAMS_VERSION, YAMS_REVISION, YAMS_COMPILER, YAMS_COMPILER_VERSION);
 }
@@ -31,7 +34,7 @@ Options:\n\
 
 void usage_error(const char* msg)
 {
-    printf("Error: %s\n", msg);
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, msg);
     YAMS_PrintUsage();
     exit(1);
 }
@@ -43,7 +46,7 @@ YAMS_params* YAMS_ParseArgs(int argc, char* argv[])
         if (argc >= 2) { // Minimum is standard arg0 + ROM filename
             YAMS_params* params = malloc(sizeof(YAMS_params));
             if (params == NULL) {
-                printf("Can't allocate memory for parameter structure");
+                SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Can't allocate memory for parameter structure");
                 exit(-1);
             }
 
@@ -64,10 +67,10 @@ YAMS_params* YAMS_ParseArgs(int argc, char* argv[])
             return params;
         }
         else
-            usage_error("No ROM filename specified.");
+            usage_error("No ROM filename specified.\n");
     }
     else
-        usage_error("No command-line arguments given! Possibly running in an environment that doesn't support them?");
+        usage_error("No command-line arguments given! Possibly running in an environment that doesn't support them?\n");
 
     return NULL;
 }

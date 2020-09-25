@@ -13,7 +13,6 @@
 #include "usage.h"
 #include "musashi/m68k.h"
 #include <SDL2/SDL.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static const Uint32 updateInterval = 1000 / SIM_REFRESH_HZ;
@@ -37,18 +36,18 @@ int main(int argc, char* argv[])
 
     // Initialize SDL
     if (SDL_Init(SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0) {
-        SDL_Log("Unable to initialize SDL: %s\n", SDL_GetError());
+        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         return -1;
     }
 
     // Set up memory map and ROM image
     YAMS_params* params = YAMS_ParseArgs(argc, argv);
     if (!YAMS_InitMemoryMap(MEMORY_BITS)) {
-        printf("Failed to allocate memory map\n");
+        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Failed to allocate system memory map!");
         return -1;
     }
     if (!YAMS_LoadROMImage(params->ROMfn, 0)) {
-        printf("Failed to load ROM image\n");
+        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Failed to load ROM image!");
         return -1;
     }
 
@@ -78,7 +77,7 @@ int main(int argc, char* argv[])
     YAMS_FreeMemoryMap();
     free(params);
     SDL_Quit();
-    printf("End of simulation");
+    SDL_Log("End of simulation");
 
     return 0;
 }

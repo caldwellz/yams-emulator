@@ -11,6 +11,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "memory.h"
 #include <SDL2/SDL_endian.h>
+#include <SDL2/SDL_log.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,7 +24,7 @@ static char* memory = NULL;
 int YAMS_InitMemoryMap(unsigned int addrBits)
 {
     if (addrBits > 24)
-        printf("Warning: Initializing an unusually large (> 24-bit) memory map.\n");
+        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Initializing an unusually large (> 24-bit) memory map.\n");
 
     unsigned int memBytes = 1 << addrBits;
     memory = malloc(memBytes);
@@ -53,7 +54,7 @@ int YAMS_LoadROMImage(const char* filename, unsigned int base)
     // Open the ROM file
     FILE* inFile = fopen(filename, "rb");
     if (inFile == NULL) {
-        printf("Unable to open file '%s'\n", filename);
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open file '%s'\n", filename);
         return 0;
     }
 
@@ -62,7 +63,7 @@ int YAMS_LoadROMImage(const char* filename, unsigned int base)
     char c = fgetc(inFile);
     while (c != EOF) {
         if (addr > memMax) {
-            printf("ROM at base $%06X exceeded memory bounds after loading %i bytes.\n", base, bytesRead);
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "ROM at base $%06X exceeded memory bounds after loading %i bytes.\n", base, bytesRead);
             return 0;
         }
         memory[addr++] = c;
@@ -77,7 +78,8 @@ int YAMS_LoadROMImage(const char* filename, unsigned int base)
     if (--addr > highROMBound)
         highROMBound = addr;
 
-    printf("Loaded %i-byte ROM at base $%06X.\nRead-only bounds are now $%06X to $%06X.\n", bytesRead, base, lowROMBound, highROMBound);
+    SDL_Log("Loaded %i-byte ROM at base $%06X.\n", bytesRead, base);
+    SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Read-only bounds are now $%06X to $%06X.\n", lowROMBound, highROMBound);
     return 1;
 }
 
@@ -132,7 +134,7 @@ unsigned int YAMS_ReadMemory32(unsigned int address)
 void YAMS_WriteMemory8(unsigned int address, unsigned int value)
 {
     if ((address >= lowROMBound) && (address <= highROMBound))
-        printf("Ignored write of 0x%02X to ROM space at $%06X\n", value, address);
+        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Ignored write of 0x%02X to ROM space at $%06X\n", value, address);
     else {
         if (memory)
             memory[address] = (char) value;
@@ -144,7 +146,7 @@ void YAMS_WriteMemory8(unsigned int address, unsigned int value)
 void YAMS_WriteMemory16(unsigned int address, unsigned int value)
 {
     if ((address >= lowROMBound) && (address <= highROMBound))
-        printf("Ignored write of 0x%04X to ROM space at $%06X\n", value, address);
+        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Ignored write of 0x%04X to ROM space at $%06X\n", value, address);
     else {
         // Everything has to be stored in big-endian format,
         // since we don't know in what size it will be read back out.
@@ -160,7 +162,7 @@ void YAMS_WriteMemory16(unsigned int address, unsigned int value)
 void YAMS_WriteMemory32(unsigned int address, unsigned int value)
 {
     if ((address >= lowROMBound) && (address <= highROMBound))
-        printf("Ignored write of 0x%08X to ROM space at $%06X\n", value, address);
+        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Ignored write of 0x%08X to ROM space at $%06X\n", value, address);
     else {
         // Everything has to be stored in big-endian format,
         // since we don't know in what size it will be read back out.
