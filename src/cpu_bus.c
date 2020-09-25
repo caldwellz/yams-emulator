@@ -44,26 +44,26 @@ void m68k_set_fc(unsigned int new_fc)
 /** Dispatches reads to either memory (ROM/RAM) or peripheral space. */
 unsigned int m68k_read_memory_8(unsigned int address)
 {
-	if (address <= YAMS_GetMaxMemAddress())
-		return YAMS_ReadMemory8(address);
-	else {
-		// TODO: read from peripheral space
-		printf("Read byte outside memory at $%06X\n", address);
-	}
+    if (address <= YAMS_GetMaxMemAddress())
+        return YAMS_ReadMemory8(address);
+    else {
+        // TODO: read from peripheral space
+        printf("Read byte outside memory at $%06X\n", address);
+    }
 
-	return 0;
+    return 0;
 }
 
 
 /** Dispatches reads to either memory (ROM/RAM) or peripheral space. */
 unsigned int m68k_read_memory_16(unsigned int address)
 {
-	if (address <= YAMS_GetMaxMemAddress())
-		return YAMS_ReadMemory16(address);
-	else {
-		// TODO: read from peripheral space
-		printf("Read word outside memory at $%06X\n", address);
-	}
+    if (address <= YAMS_GetMaxMemAddress())
+        return YAMS_ReadMemory16(address);
+    else {
+        // TODO: read from peripheral space
+        printf("Read word outside memory at $%06X\n", address);
+    }
 
     return 0;
 }
@@ -72,12 +72,12 @@ unsigned int m68k_read_memory_16(unsigned int address)
 /** Dispatches reads to either memory (ROM/RAM) or peripheral space. */
 unsigned int m68k_read_memory_32(unsigned int address)
 {
-	if (address <= YAMS_GetMaxMemAddress())
-		return YAMS_ReadMemory32(address);
-	else {
-		// TODO: read from peripheral space
-		printf("Read long outside memory at $%06X\n", address);
-	}
+    if (address <= YAMS_GetMaxMemAddress())
+        return YAMS_ReadMemory32(address);
+    else {
+        // TODO: read from peripheral space
+        printf("Read long outside memory at $%06X\n", address);
+    }
 
     return 0;
 }
@@ -86,46 +86,46 @@ unsigned int m68k_read_memory_32(unsigned int address)
 /** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_8(unsigned int address, unsigned int value)
 {
-	if (address == DBG_ADDRESS)
-		printf("Wrote       0x%02X to debug address\n", value);
-	else {
-		if (address <= YAMS_GetMaxMemAddress())
-			YAMS_WriteMemory8(address, value);
-		else {
-			// TODO: write to peripheral space
-			printf("Ignored write of 0x%02X outside memory at $%06X\n", value, address);
-		}
-	}
+    if (address == DBG_ADDRESS)
+        printf("Wrote       0x%02X to debug address\n", value);
+    else {
+        if (address <= YAMS_GetMaxMemAddress())
+            YAMS_WriteMemory8(address, value);
+        else {
+            // TODO: write to peripheral space
+            printf("Ignored write of 0x%02X outside memory at $%06X\n", value, address);
+        }
+    }
 }
 
 
 /** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_16(unsigned int address, unsigned int value)
 {
-	if (address == DBG_ADDRESS)
-		printf("Wrote     0x%04X to debug address\n", value);
-	else {
-		if (address <= YAMS_GetMaxMemAddress())
-			YAMS_WriteMemory16(address, value);
-		else {
-			// TODO: write to peripheral space
-			printf("Ignored write of 0x%04X outside memory at $%06X\n", value, address);
-		}
-	}
+    if (address == DBG_ADDRESS)
+        printf("Wrote     0x%04X to debug address\n", value);
+    else {
+        if (address <= YAMS_GetMaxMemAddress())
+            YAMS_WriteMemory16(address, value);
+        else {
+            // TODO: write to peripheral space
+            printf("Ignored write of 0x%04X outside memory at $%06X\n", value, address);
+        }
+    }
 }
 
 
 /** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_32(unsigned int address, unsigned int value)
 {
-	if (address == DBG_ADDRESS)
-		printf("Wrote 0x%08X to debug address\n", value);
-	else {
-		if (address <= YAMS_GetMaxMemAddress())
-			YAMS_WriteMemory32(address, value);
-		else {
-			// TODO: write to peripheral space
-			printf("Ignored write of 0x%08X outside memory at $%06X\n", value, address);
-		}
-	}
+    if (address == DBG_ADDRESS)
+        printf("Wrote 0x%08X to debug address\n", value);
+    else {
+        if (address <= YAMS_GetMaxMemAddress())
+            YAMS_WriteMemory32(address, value);
+        else {
+            // TODO: write to peripheral space
+            printf("Ignored write of 0x%08X outside memory at $%06X\n", value, address);
+        }
+    }
 }
