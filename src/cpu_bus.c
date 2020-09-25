@@ -8,12 +8,10 @@
 * can obtain one at http://mozilla.org/MPL/2.0/.   *
 ***************************************************/
 
+#include "config.h"
 #include "memory.h"
 #include "musashi/m68k.h"
 #include <stdio.h>
-
-// Debug-write address
-const unsigned int debugAddr = 0xDEC0DE;
 
 // CPU function codes (address spaces) table
 const char* functionCodes[8] = {
@@ -88,7 +86,7 @@ unsigned int m68k_read_memory_32(unsigned int address)
 /** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_8(unsigned int address, unsigned int value)
 {
-	if (address == debugAddr)
+	if (address == DBG_ADDRESS)
 		printf("Wrote       0x%02X to debug address\n", value);
 	else {
 		if (address <= YAMS_GetMaxMemAddress())
@@ -104,7 +102,7 @@ void m68k_write_memory_8(unsigned int address, unsigned int value)
 /** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_16(unsigned int address, unsigned int value)
 {
-	if (address == debugAddr)
+	if (address == DBG_ADDRESS)
 		printf("Wrote     0x%04X to debug address\n", value);
 	else {
 		if (address <= YAMS_GetMaxMemAddress())
@@ -120,7 +118,7 @@ void m68k_write_memory_16(unsigned int address, unsigned int value)
 /** Dispatches writes to either memory (ROM/RAM) or peripheral space. */
 void m68k_write_memory_32(unsigned int address, unsigned int value)
 {
-	if (address == debugAddr)
+	if (address == DBG_ADDRESS)
 		printf("Wrote 0x%08X to debug address\n", value);
 	else {
 		if (address <= YAMS_GetMaxMemAddress())
