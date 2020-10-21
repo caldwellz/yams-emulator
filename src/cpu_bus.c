@@ -27,7 +27,8 @@ const char* functionCodes[8] = {
 /** Function Code handler, set on every memory access */
 void m68k_set_fc(unsigned int new_fc)
 {
-    static unsigned int fc = 0;
+#ifdef DEBUG
+    static unsigned int fc = 0xF; // Impossible value to make sure we catch every change
     static unsigned int fc_count = 0;
 
     if (new_fc != fc) {
@@ -37,6 +38,7 @@ void m68k_set_fc(unsigned int new_fc)
     }
     else
         ++fc_count;
+#endif
 }
 
 

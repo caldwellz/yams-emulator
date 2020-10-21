@@ -29,7 +29,11 @@
 
 // Shorten some annoyingly long log calls to look more like SDL_Log
 #include <SDL2/SDL_log.h>
-#define LogDebug(...) SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
+#ifdef DEBUG
+  #define LogDebug(...) SDL_Log(__VA_ARGS__)
+#else
+  #define LogDebug(...)  
+#endif
 #define LogWarn(...) SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
 #define LogError(...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
 #define LogCritical(...) SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
