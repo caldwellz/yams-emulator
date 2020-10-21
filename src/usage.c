@@ -8,9 +8,10 @@
 * can obtain one at http://mozilla.org/MPL/2.0/.   *
 ***************************************************/
 
+#include "config.h"
 #include "usage.h"
 #include "version.h"
-#include <SDL2/SDL_log.h>
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,7 +35,7 @@ Options:\n\
 
 void usage_error(const char* msg)
 {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, msg);
+    LogError(msg);
     YAMS_PrintUsage();
     exit(1);
 }
@@ -46,7 +47,7 @@ YAMS_params* YAMS_ParseArgs(int argc, char* argv[])
         if (argc >= 2) { // Minimum is standard arg0 + ROM filename
             YAMS_params* params = malloc(sizeof(YAMS_params));
             if (params == NULL) {
-                SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Can't allocate memory for parameter structure");
+                LogCritical("Can't allocate memory for parameter structure");
                 exit(-1);
             }
 

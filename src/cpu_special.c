@@ -8,13 +8,13 @@
 * can obtain one at http://mozilla.org/MPL/2.0/.   *
 ***************************************************/
 
+#include "config.h"
 #include "musashi/m68k.h"
-#include <SDL2/SDL_log.h>
 
 /** Illegal instruction handler */
 int m68k_on_illegal_instr(int opcode)
 {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Tried to process illegal opcode 0x%04X at $%06X\n", opcode, m68k_get_reg(NULL, M68K_REG_PC));
+    LogError("Tried to process illegal opcode 0x%04X at $%06X\n", opcode, m68k_get_reg(NULL, M68K_REG_PC));
     return 1; // 1 to cancel illegal-instruction exception, 0 to continue it
 }
 
@@ -22,7 +22,7 @@ int m68k_on_illegal_instr(int opcode)
 /** Breakpoint instruction handler */
 void m68k_on_breakpoint(unsigned int data)
 {
-    SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Hit breakpoint at $%06X\n", m68k_get_reg(NULL, M68K_REG_PC));
+    LogDebug("Hit breakpoint at $%06X\n", m68k_get_reg(NULL, M68K_REG_PC));
 }
 
 

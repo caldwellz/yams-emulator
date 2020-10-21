@@ -36,18 +36,18 @@ int main(int argc, char* argv[])
 
     // Initialize SDL
     if (SDL_Init(SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
+        LogCritical("Unable to initialize SDL: %s", SDL_GetError());
         return -1;
     }
 
     // Set up memory map and ROM image
     YAMS_params* params = YAMS_ParseArgs(argc, argv);
     if (!YAMS_InitMemoryMap(MEMORY_BITS)) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Failed to allocate system memory map!");
+        LogCritical("Failed to allocate system memory map!");
         return -1;
     }
     if (!YAMS_LoadROMImage(params->ROMfn, 0)) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Failed to load ROM image!");
+        LogCritical("Failed to load ROM image!");
         return -1;
     }
 
@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
     // Clean up
     YAMS_FreeMemoryMap();
     free(params);
-    SDL_Quit();
     SDL_Log("End of simulation");
+    SDL_Quit();
 
     return 0;
 }

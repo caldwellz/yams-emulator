@@ -27,4 +27,11 @@
 // Define the emulated CPU's clock speed (in Hz).
 #define CPU_CLOCK_HZ 12000000
 
+// Shorten some annoyingly long log calls to look more like SDL_Log
+#include <SDL2/SDL_log.h>
+#define LogDebug(...) SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
+#define LogWarn(...) SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
+#define LogError(...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
+#define LogCritical(...) SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, __VA_ARGS__)
+
 #endif //_YAMS_CONFIG_H_
