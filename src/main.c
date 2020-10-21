@@ -12,6 +12,7 @@
 #include "memory.h"
 #include "usage.h"
 #include "musashi/m68k.h"
+#include "musashi/m68kcpu.h"
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 
@@ -24,6 +25,22 @@ static const Uint32 updateCycles = CPU_CLOCK_HZ / SIM_REFRESH_HZ;
 Uint32 ExecutionCallback(Uint32 interval, void *param)
 {
     m68k_execute(updateCycles);
+
+    // Quickly make sure the CPU has not stopped
+    // But only handle code-initiated STOPs for now, not a HALT pulse
+    if (CPU_STOPPED & STOP_LEVEL_STOP) {
+        // Mask is also just a wild guess for now until we emulate some interrupt-generating
+        // peripherals and perhaps have valid reasons for pausing the CPU.
+        if (FLAG_INT_MASK >= 1) {
+            // Log and prepare to exit
+            SDL_Log("Processor halted");
+            SDL_Event evt;
+            evt.type = SDL_QUIT;
+            SDL_PushEvent(&evt);
+            return 0;
+        }
+    }
+
     return interval;
 }
 
