@@ -1,1 +1,4 @@
-
+option('memory_bits', type : 'integer', value : 21)
+option('dbg_address', type : 'string', value : '0xDEC0DE')
+option('emu_refresh_hz', type : 'integer', value : 10)
+option('cpu_speed_hz', type : 'integer', value : 12000000)

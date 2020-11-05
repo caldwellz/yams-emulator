@@ -16,14 +16,12 @@
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 
-static const Uint32 updateInterval = 1000 / SIM_REFRESH_HZ;
-static const Uint32 updateCycles = CPU_CLOCK_HZ / SIM_REFRESH_HZ;
-
 // Callback to run the CPU every update interval.
 // Runs in a separate thread, so must be careful not to touch the
 // memory or CPU internals from the main thread after starting.
 Uint32 ExecutionCallback(Uint32 interval, void *param)
 {
+    Uint32 updateCycles = *((Uint32*) param);
     m68k_execute(updateCycles);
 
     // Quickly make sure the CPU has not stopped
@@ -72,7 +70,9 @@ int main(int argc, char* argv[])
     m68k_init();
     m68k_set_cpu_type(M68K_CPU_TYPE_68010);
     m68k_pulse_reset();
-    SDL_TimerID CPUTimer = SDL_AddTimer(updateInterval, ExecutionCallback, NULL);
+    Uint32 updateInterval = 1000 / EMU_REFRESH_HZ;
+    Uint32 updateCycles = CPU_SPEED_HZ / EMU_REFRESH_HZ;
+    SDL_TimerID CPUTimer = SDL_AddTimer(updateInterval, ExecutionCallback, &updateCycles);
 
     // Handle any events that come up, and hang this thread in the background otherwise
     SDL_Event evt;

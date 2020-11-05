@@ -16,6 +16,17 @@ versionfile = vcs_tag(command : ['git', 'rev-parse', '--short', 'HEAD'], fallbac
 # To get commit number instead of ID: ['git', 'rev-list', '--count', 'HEAD']
 
 
+# Config file
+config_data = configuration_data()
+config_data.set('memory_bits', get_option('memory_bits'))
+config_data.set('dbg_address', get_option('dbg_address'))
+config_data.set('emu_refresh_hz', get_option('emu_refresh_hz'))
+config_data.set('cpu_speed_hz', get_option('cpu_speed_hz'))
+configfile = configure_file(configuration : config_data
+  , input : 'config.c.in'
+  , output : 'config.c')
+
+
 # Find dependencies
 # - SDL2
 dep_sdl = dependency('sdl2', required : false)
@@ -37,5 +48,6 @@ subdir('musashi')
 
 
 # Create the executable target
-emu_exe = executable(meson.project_name(), [emu_srcs, versionfile[0]], dependencies : emu_deps, install : true)
+emu_exe = executable(meson.project_name(), [emu_srcs, configfile, versionfile[0]], dependencies : emu_deps, install : true)
+declare_dependency(sources : configfile, link_with : emu_exe)
 declare_dependency(sources : versionfile, link_with : emu_exe)
